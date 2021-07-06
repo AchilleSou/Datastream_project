@@ -1,6 +1,6 @@
-# Datastream_project
-Final project for the datastream course of IASD Paris Dauphine-PSL.
-
+# Datastream project
+Final project for the datastream course of IASD Paris Dauphine-PSL.  
+Authors : Achille Soulié & Maxence Lebec
 ## Requirements
  * Java 1.8
  * Scala
