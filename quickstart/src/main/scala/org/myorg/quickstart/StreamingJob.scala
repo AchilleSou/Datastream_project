@@ -83,7 +83,7 @@ object StreamingJob {
     val display: DataStream[ObjectNode] = env.addSource(kafkaSourceDisplay)
     val click: DataStream[ObjectNode] = env.addSource(kafkaSourceClick)
 
-    // extract info from json and convert into list
+    // extract info from ObjectNode and convert into Map
     val clean_display: DataStream[Map[String, Any]] = display
       .map(x => extract(x))
     val clean_click: DataStream[Map[String, Any]] = click
@@ -144,14 +144,15 @@ object StreamingJob {
     val myProducer = new FlinkKafkaProducer[String](
       "suspects",
       new SimpleStringSchema(),
-      properties2)
+      properties2
+    )
 
     suspectUid.map(x => JSONObject(x).toString()).addSink(myProducer)
     suspectIp.map(x => JSONObject(x).toString()).addSink(myProducer)
     suspectImpressionId.map(x => JSONObject(x).toString()).addSink(myProducer)
 
 
-    // print the `suspects` topic to assert that information is sent
+    // print the `suspects` topic
     val kafkaSourceSuspects = new FlinkKafkaConsumer[String]("suspects", new SimpleStringSchema(), properties)
     val suspects: DataStream[String] = env.addSource(kafkaSourceSuspects)
     suspects.print()
